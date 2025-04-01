@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] float sens;
 
+    Transform orintation;
+
     float mouseX;
     float mouseY;
 
@@ -33,14 +35,13 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDir = new Vector3 (MovX, 0, movZ);
         moveDir.Normalize();
 
-        rb.velocity = new Vector3 (MovX * moveSpeed, rb.velocity.y, movZ * moveSpeed);
+        rb.velocity = (transform.forward * movZ * moveSpeed) + (new Vector3 (0, -1, 0));
+
+
 
         if (moveDir !=  Vector3.zero)
         {
-            Quaternion toRotation = Quaternion.LookRotation(moveDir, Vector3.up);
-
-            transform.localRotation = Quaternion.RotateTowards(body.transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-
+            transform.Rotate(Vector3.up, MovX * rotateSpeed * Time.deltaTime);
         }
     }
 
