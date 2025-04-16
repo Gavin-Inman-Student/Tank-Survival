@@ -23,9 +23,14 @@ public class Bullet : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Terrian"))
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Tank"))
         {
             Destroy(this.gameObject);
         }

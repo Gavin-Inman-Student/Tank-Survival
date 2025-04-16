@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,10 +9,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject muzzle;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject smoke;
+    [SerializeField] Slider slider;
+    [SerializeField] GameObject ex;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] float sensY;
     [SerializeField] float sensX;
+
+    public static float health = 100;
 
     bool canShoot = true;
 
@@ -26,8 +29,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
     }
     private void Update()
     {
@@ -59,7 +62,7 @@ public class PlayerController : MonoBehaviour
     {
         mouseX += Input.GetAxis("Mouse X");
         mouseY += Input.GetAxis("Mouse Y");
-        mouseY = Mathf.Clamp(mouseY, -7f, 7f);
+        mouseY = Mathf.Clamp(mouseY, -30f, 30f);
 
         turret.transform.localRotation = Quaternion.Euler(0, mouseX * sensX, 0);
 
@@ -79,6 +82,21 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(3);
             Destroy(g);
             canShoot = true;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            health -= 10;
+            slider.value = health;
+            Instantiate(ex, transform.position, Quaternion.identity);
+
+            if (health <= 0)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Terrian
+  - Bullet
+  - Tank
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX

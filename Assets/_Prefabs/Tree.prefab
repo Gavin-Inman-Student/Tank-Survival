@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2865709905606570121}
   - component: {fileID: 9036033024193096691}
   - component: {fileID: 3806978785510518020}
+  - component: {fileID: 7179339352180523610}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Terrian
@@ -87,6 +88,25 @@ CapsuleCollider:
   m_Height: 9.065636
   m_Direction: 1
   m_Center: {x: 0, y: 4.032818, z: 0}
+--- !u!114 &7179339352180523610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8816827743990695972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &8473849518873874006
 PrefabInstance:
   m_ObjectHideFlags: 0
