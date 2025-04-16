@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -11,12 +12,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject smoke;
     [SerializeField] Slider slider;
     [SerializeField] GameObject ex;
+    [SerializeField] GameObject deathSmoke;
+    [SerializeField] Canvas canvas;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] float sensY;
     [SerializeField] float sensX;
 
     public static float health = 100;
+    public static Slider sd;
 
     bool canShoot = true;
 
@@ -31,12 +35,14 @@ public class PlayerController : MonoBehaviour
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
+        sd = slider;
     }
     private void Update()
     {
         Move();
         Rotate();
         StartCoroutine(Shoot());
+        Cursor();
     }
 
     private void Move()
@@ -95,8 +101,19 @@ public class PlayerController : MonoBehaviour
 
             if (health <= 0)
             {
-                Destroy(this.gameObject);
+                deathSmoke.SetActive(true);
+                Destroy(this);
             }
         }
+    }
+
+    void Cursor()
+    {
+        Physics.Raycast(spawner.transform.position, spawner.forward, out RaycastHit hit);
+
+        Debug.DrawRay(spawner.transform.position, spawner.forward * 1000, Color.red);
+
+
+
     }
 }

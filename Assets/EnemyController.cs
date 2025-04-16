@@ -17,14 +17,17 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Canvas canvas;
     [SerializeField] Slider slider;
     [SerializeField] float rotateSpeed;
-    [SerializeField] float sensY;
-    [SerializeField] float sensX;
+    [SerializeField] float speed;
+    public static float shootingTime = 3;
 
     float health = 100;
 
     bool canShoot = true;
+    bool isShooting = false;
 
     bool canRotate = true;
+
+    bool damaged = false;
 
     private void Start()
     {
@@ -41,7 +44,16 @@ public class EnemyController : MonoBehaviour
 
     private void Move()
     {
-        agent.SetDestination(player.transform.position);
+        if (!isShooting)
+        {
+            agent.enabled = true;
+            agent.SetDestination(player.transform.position);
+        }
+
+        else
+        {
+            agent.enabled = false;
+        }
     }
 
     void Rotate()
@@ -58,12 +70,14 @@ public class EnemyController : MonoBehaviour
     {
         if (canShoot)
         {
+            isShooting = true;
             canShoot = false;
             canRotate = false;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(shootingTime);
             Instantiate(bullet, spawner.position, spawner.rotation);
             GameObject g = Instantiate(smoke, spawner.position, spawner.rotation);
             yield return new WaitForSeconds(1);
+            isShooting = false;
             canRotate = true;
             yield return new WaitForSeconds(2);
             Destroy(g);
@@ -80,20 +94,36 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet") && damaged == false)
         {
+            damaged = true;
             health -= 50;
             slider.value = health;
             Instantiate(ex, transform.position, Quaternion.identity);
 
             if (health <= 0)
             {
-                PlayerController.health += 20;
+                if (PlayerController.health + 20 <= 100)
+                {
+                    PlayerController.health += 20;
+                }
+                else if (PlayerController.health + 20 > 100)
+                {
+                    PlayerController.health = 100;
+                }
+                PlayerController.sd.value = PlayerController.health;
                 Manager.score += 1;
                 Manager.destroyed += 1;
                 Destroy(this.gameObject);
             }
+            StartCoroutine(Wait());           
         }
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1);
+        damaged = false;
     }
 }
 
