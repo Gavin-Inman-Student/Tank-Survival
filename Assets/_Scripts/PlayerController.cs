@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public static float health = 100;
     public static Slider sd;
 
+    public static bool canRotate = true;
+
     bool canShoot = true;
 
     float mouseX;
@@ -66,13 +68,16 @@ public class PlayerController : MonoBehaviour
 
     void Rotate()
     {
-        mouseX += Input.GetAxis("Mouse X");
-        mouseY += Input.GetAxis("Mouse Y");
-        mouseY = Mathf.Clamp(mouseY, -30f, 30f);
+        if (canRotate)
+        {
+            mouseX += Input.GetAxis("Mouse X");
+            mouseY += Input.GetAxis("Mouse Y");
+            mouseY = Mathf.Clamp(mouseY, -30f, 30f);
 
-        turret.transform.localRotation = Quaternion.Euler(0, mouseX * sensX, 0);
+            turret.transform.localRotation = Quaternion.Euler(0, mouseX * sensX, 0);
 
-        muzzle.transform.localRotation = Quaternion.Euler(-mouseY * sensY, 0, 0);
+            muzzle.transform.localRotation = Quaternion.Euler(-mouseY * sensY, 0, 0);
+        }
 
     }
 

@@ -32,9 +32,14 @@ public class EnemyController : MonoBehaviour
 
     bool damaged = false;
 
+    [SerializeField] bool menu;
+
     private void Start()
     {
-        player = GameObject.Find("PlayerTank");
+        if (menu == false)
+        {
+            player = GameObject.Find("PlayerTank");
+        }
         agent = GetComponent<NavMeshAgent>();
     }
     private void Update()
@@ -111,17 +116,20 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet") && damaged == false)
         {
             damaged = true;
-            health -= 50;
+            if (menu == false)
+            {
+                health -= 50;
+            }
             slider.value = health;
             Instantiate(ex, transform.position, Quaternion.identity);
 
             if (health <= 0)
             {
-                if (PlayerController.health + 20 <= 100)
+                if (PlayerController.health + 10 <= 100)
                 {
-                    PlayerController.health += 20;
+                    PlayerController.health += 10;
                 }
-                else if (PlayerController.health + 20 > 100)
+                else if (PlayerController.health + 10 > 100)
                 {
                     PlayerController.health = 100;
                 }

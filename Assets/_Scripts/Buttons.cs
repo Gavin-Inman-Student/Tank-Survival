@@ -9,6 +9,10 @@ public class Buttons : MonoBehaviour
     {
         StartCoroutine(Wait());
         SceneManager.LoadScene(sceneName);
+        Manager.spawned = 0;
+        PlayerController.canRotate = true;
+        Manager.score = 0;
+        PlayerController.health = 100;
         Time.timeScale = 1.0f;
 
     }

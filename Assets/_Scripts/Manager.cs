@@ -12,10 +12,12 @@ public class Manager : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject tank;
     [SerializeField] GameObject menu;
+    [SerializeField] GameObject gameOver;
     [SerializeField] GameObject scoreTxt;
     [SerializeField] GameObject health;
 
     public static GameObject menu1;
+    public static GameObject gameOver1;
     public static GameObject scoreTxt1;
     public static GameObject health1;
 
@@ -27,6 +29,7 @@ public class Manager : MonoBehaviour
         menu1 = menu;
         scoreTxt1 = scoreTxt;
         health1 = health;
+        gameOver1 = gameOver;
     }
 
     private void Update()
@@ -37,21 +40,26 @@ public class Manager : MonoBehaviour
             maxSpawned += 1;
             
         }
-
         
-
-        if (spawned == 12)
+        switch (maxSpawned)
         {
-            EnemyController.shootingTime = 2.5f;
-        }
+            case 10:
+                EnemyController.shootingTime = 2.5f;
+                break;
 
-        if (spawned == 18)
-        {
-            EnemyController.shootingTime = 2;
-        }
+            case 15:
+                EnemyController.shootingTime = 2;
+                break;
 
-        Debug.Log(spawned);
-        Debug.Log(maxSpawned);
+            case 20:
+                EnemyController.shootingTime = 1.5f;
+                break;
+
+            case 25:
+                EnemyController.shootingTime = 1;
+                break;
+
+        }
 
         SetText();
         StartCoroutine(Spawn());
@@ -85,6 +93,7 @@ public class Manager : MonoBehaviour
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
+            PlayerController.canRotate = false;
             Time.timeScale = 0;
             menu.SetActive(true);
             scoreTxt.SetActive(false);
@@ -97,10 +106,24 @@ public class Manager : MonoBehaviour
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
+        PlayerController.canRotate = true;
         Time.timeScale = 1;
         menu1.SetActive(false);
         scoreTxt1.SetActive(true);
         health1.SetActive(true);
+    }
+
+    public static void GameOver()
+    {
+        if (PlayerController.health <= 0)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+            PlayerController.canRotate = false;
+            gameOver1.SetActive(true);
+            scoreTxt1.SetActive(false);
+            health1.SetActive(false);
+        }
     }
 }
 
